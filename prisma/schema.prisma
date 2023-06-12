@@ -20,24 +20,27 @@ model Artist {
 
 model Publish {
   id_publish        Int     @default(autoincrement()) @id
-  artist_id  Int
+  artist_id  Int?
   publish_artist   Artist?   @relation(fields: [artist_id], references: [id_artist])
-  type_publish Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  type_publish Publish_type? @default(single)
   name     String
   date   DateTime
   theme Theme[]
 }
 
-model Type{
-  id_type Int @id
-  name String
-  // publish_type Int @id @relation(fields: [id_type], references: [type_publish])
+enum Publish_type {
+  album
+  EP
+  single
+  compilado
 }
 
 model Theme{
   id Int @default(autoincrement()) @id
   publish_id Int
   theme_publish Publish? @relation(fields: [publish_id], references: [id_publish])
-  index Int
+  index Int @default(autoincrement())
   duration BigInt
 }
