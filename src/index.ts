@@ -18,7 +18,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", artistRoutes );
-app.use("/api", publishRoutes);
 app.use("/api", themeRoutes);
+app.use("/api", publishRoutes);
 
 app.listen(PORT, ()=> console.log(`Servidor listo en el puerto ${PORT}`));

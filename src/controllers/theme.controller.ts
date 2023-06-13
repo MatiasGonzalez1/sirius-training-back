@@ -4,9 +4,9 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 
-const getAllTheme= async (req: Request, res: Response)=>{
+const getAllTheme = async (req: Request, res: Response)=>{
   try {
-    const response = await prisma.theme.findMany();
+    const response = await prisma.theme.findMany({});
     res.send(response);
   } catch (error) {
     handleHttp(res, 'ERROR_GET_THEME')    
@@ -29,7 +29,7 @@ const getOneTheme= async({params}:Request, res:Response)=>{
   }
 }
 
-const createTheme =async ({body}:Request, res:Response) => {
+const createTheme = async({body}:Request, res:Response) => {
   try{
     const create = await prisma.theme.create({
       data: body
@@ -73,5 +73,4 @@ const deleteTheme= async({params}:Request, res:Response)=>{
   }
 }
 
-export {getAllTheme, createTheme, getOneTheme, deleteTheme, updateTheme
-}
+export {getAllTheme, createTheme, getOneTheme, deleteTheme, updateTheme}
