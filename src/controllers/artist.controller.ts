@@ -22,7 +22,14 @@ const getOneArtist = async({params}:Request, res:Response)=>{
     const getOne = await prisma.artist.findUnique({
       where:{
         id_artist:idParse
-      }
+      }, 
+      include:{
+        post:{
+          orderBy:{
+            date: 'desc'
+          }
+        }
+      },
     });
     res.send(getOne)
   }
