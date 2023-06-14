@@ -6,7 +6,7 @@ const prisma = new PrismaClient()
 
 const getAllTheme = async (req: Request, res: Response)=>{
   try {
-    const response = await prisma.theme.findMany({});
+    const response = await prisma.theme.findMany({})
     res.send(response);
   } catch (error) {
     handleHttp(res, 'ERROR_GET_THEME')    
@@ -69,7 +69,7 @@ const deleteTheme= async({params}:Request, res:Response)=>{
     res.send(deleteOne)
   }
    catch (error) {
-    handleHttp(res, 'ERROR_DELETE_PUBLISH')    
+    handleHttp(res, 'ERROR_DELETE_THEME')    
   }
 }
 

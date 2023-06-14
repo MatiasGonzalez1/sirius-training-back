@@ -3,10 +3,10 @@ import {getAllArtists, createArtist, getOneArtist, deleteArtist, updateArtist} f
 
 const router = Router();
 
-router.get("/artist", getAllArtists);
-router.get("/artist/:id", getOneArtist)
-router.post("/artist", createArtist);
-router.put("/artist/:id", updateArtist);
-router.delete("/artist/:id", deleteArtist);
+router.get("/artists", getAllArtists);
+router.get("/artists/:id", getOneArtist)
+router.post("/artists", createArtist);
+router.put("/artists/:id", updateArtist);
+router.delete("/artists/:id", deleteArtist);
 
 export default router;

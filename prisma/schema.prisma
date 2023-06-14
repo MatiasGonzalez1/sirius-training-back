@@ -39,8 +39,8 @@ enum Publish_type {
 
 model Theme{
   id Int @default(autoincrement()) @id
-  publish_id Int
+  publish_id Int?
   theme_publish Publish? @relation(fields: [publish_id], references: [id_publish])
   index Int @default(autoincrement())
-  duration BigInt
+  duration Int
 }
