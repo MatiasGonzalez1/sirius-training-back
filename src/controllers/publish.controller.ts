@@ -23,13 +23,13 @@ const getOnePublish = async({params}:Request, res:Response)=>{
       where:{
        id_publish:idParse
       },
-      // include:{
-      //   theme:{
-      //     orderBy:{
-      //       index:'asc'
-      //     }
-      //   }
-      // },
+      include:{
+        theme:{
+          orderBy:{
+            index:'asc'
+          }
+        }
+      },
     });
     res.send(getOne)
   }
