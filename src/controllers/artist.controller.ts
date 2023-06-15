@@ -34,7 +34,7 @@ const getOneArtist = async({params}:Request, res:Response)=>{
     res.send(getOne)
   }
    catch (error) {
-    handleHttp(res, 'ERROR_GET_ARTIST')    
+    handleHttp(res, 'ERROR_GET_ARTIST', 'Artist not found')    
   }
 }
 

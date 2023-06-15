@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { handleHttp } from "../utils/error.handle"
-import { PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient, Publish, Theme } from '@prisma/client'
 const prisma = new PrismaClient()
 
 
@@ -19,6 +19,15 @@ const getOnePublish = async({params}:Request, res:Response)=>{
   try {
     const id = params.id
     const idParse = parseInt(id)
+    const totalDuration:any = await prisma.theme.aggregate({
+      // where:{
+      //   duration:{gt:0},
+      // },
+      _sum:{
+        duration:true
+      }
+      })
+    // const totalDuration: any = await prisma.$queryRaw(Prisma.sql`SELECT SUM("duration") FROM "Theme"`);
     const getOne = await prisma.publish.findUnique({
       where:{
        id_publish:idParse
@@ -28,13 +37,14 @@ const getOnePublish = async({params}:Request, res:Response)=>{
           orderBy:{
             index:'asc'
           }
-        }
+        },        
       },
     });
-    res.send(getOne)
+    // res.send({...getOne, totalDuration: parseInt(totalDuration[0].sum)})
+    res.send({getOne, totalDuration:(totalDuration._sum.duration)})
   }
    catch (error) {
-    handleHttp(res, 'ERROR_GET_PUBLISH')    
+    handleHttp(res, 'ERROR_GET_PUBLISH', error)    
   }
 }
 
