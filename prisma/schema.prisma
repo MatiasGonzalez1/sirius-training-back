@@ -24,7 +24,7 @@ model Publish {
   publish_artist   Artist?   @relation(fields: [artist_id], references: [id_artist])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  type_publish Publish_type? @default(single)
+  type_publish Publish_type? @default(album)
   name     String
   date   DateTime
   theme Theme[]
@@ -41,6 +41,8 @@ model Theme{
   id Int @default(autoincrement()) @id
   publish_id Int?
   theme_publish Publish? @relation(fields: [publish_id], references: [id_publish])
-  index Int @default(autoincrement())
+  index Int  
   duration Int
+
+  @@unique([index, publish_id])
 }

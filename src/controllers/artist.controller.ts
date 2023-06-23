@@ -6,19 +6,21 @@ const prisma = new PrismaClient()
 
 
 const getAllArtists = async (req: Request, res: Response)=>{
-  try {
     const response = await prisma.artist.findMany({
     });
-    res.send(response);
-  } catch (error) {
-    handleHttp(res, 'ERROR_GET_ARTISTS')    
-  }
+    if(response.length === 0){
+      res.send({response:'There are no artists currently'})
+    }else{
+    res.send({response})
+    };
+  
 }
 
 const getOneArtist = async({params}:Request, res:Response)=>{
-  try {
     const id = params.id
     const idParse = parseInt(id)
+    
+    try{
     const getOne = await prisma.artist.findUnique({
       where:{
         id_artist:idParse
@@ -31,26 +33,35 @@ const getOneArtist = async({params}:Request, res:Response)=>{
         }
       },
     });
-    res.send(getOne)
+
+    if(!getOne){
+      res.status(404).send({error:"Artist not found"})
+    }
+    res.send({artist:getOne})
   }
-   catch (error) {
-    handleHttp(res, 'ERROR_GET_ARTIST', 'Artist not found')    
+  catch(error){
+    console.log(error)
   }
 }
 
 const createArtist =async ({body}:Request, res:Response) => {
-  try{
-    
-    const create = await prisma.artist.create({
-      data: body
-    });
-    res.send(create)
-  } catch(error){
-    handleHttp(res, 'ERROR_CREATE_ARTIST')
+  if(
+    !body.name 
+  ){
+    res.status(400).send({status:"FAILED", data: {error: "The following key are empty in request body: 'name'"}})
   }
+    try {
+      const create = await prisma.artist.create({
+        data: body
+      });
+      res.send(create)
+    } catch (error) {
+      console.error(error)
+    }  
 }
 
 const updateArtist = async({params, body}:Request, res:Response)=>{
+ 
   try {
     const id = params.id
     const idParse = parseInt(id)
@@ -60,10 +71,17 @@ const updateArtist = async({params, body}:Request, res:Response)=>{
       },
       data:body
     });
+    if(
+      !body.name 
+    ){
+      res.status(400).send({status:"FAILED", data: {error: "The following key are empty in request body: 'name'"}})
+    } 
+    else{
     res.send(getOne)
+    }
   }
    catch (error) {
-    handleHttp(res, 'ERROR_DELETE_ARTIST')    
+    handleHttp(res, 'ERROR_UPDATE_ARTIST', 500, 'ARTIST NOT FOUND')    
   }
 }
 
@@ -76,10 +94,10 @@ const deleteArtist = async({params}:Request, res:Response)=>{
         id_artist:idParse
       }
     });
-    res.send(deleteOne)
+    res.send({status:"success", artistDeleted:deleteOne})
   }
    catch (error) {
-    handleHttp(res, 'ERROR_DELETE_ARTIST')    
+    handleHttp(res, 'ERROR_DELETE_ARTIST', 404, "ARTIST NOT FOUND")    
   }
 }
 
