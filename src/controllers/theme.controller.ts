@@ -30,13 +30,19 @@ const getOneTheme= async({params}:Request, res:Response)=>{
 }
 
 const createTheme = async({body}:Request, res:Response) => {
+  if(
+    !body.duration || !body.index || !body.publish_id
+  ){
+    res.status(400).send({status:"FAILED", data: {error: "The following keys are empty in request body:'duration' or 'index' or 'publish:id'"}})
+  }
+  
   try{
     const create = await prisma.theme.create({
       data: body
     });
     res.send(create)
   } catch(error){
-    handleHttp(res, 'ERROR_CREATE_THEME')
+    console.log(error)
   }
 }
 

@@ -17,7 +17,7 @@ CREATE TABLE "Publish" (
     "artist_id" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "type_publish" "Publish_type" DEFAULT 'single',
+    "type_publish" "Publish_type" DEFAULT 'album',
     "name" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
 
@@ -28,11 +28,14 @@ CREATE TABLE "Publish" (
 CREATE TABLE "Theme" (
     "id" SERIAL NOT NULL,
     "publish_id" INTEGER,
-    "index" SERIAL NOT NULL,
+    "index" INTEGER NOT NULL,
     "duration" INTEGER NOT NULL,
 
     CONSTRAINT "Theme_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Theme_index_publish_id_key" ON "Theme"("index", "publish_id");
 
 -- AddForeignKey
 ALTER TABLE "Publish" ADD CONSTRAINT "Publish_artist_id_fkey" FOREIGN KEY ("artist_id") REFERENCES "Artist"("id_artist") ON DELETE SET NULL ON UPDATE CASCADE;
