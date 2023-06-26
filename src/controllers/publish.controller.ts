@@ -74,6 +74,7 @@ const createPublish =async ({body}:Request, res:Response) => {
         theme:true,
       }
       })
+
     console.log(create)
     res.send(create)
   } catch(error){
@@ -94,7 +95,7 @@ const updatePublish = async({params, body}:Request, res:Response)=>{
     res.send(getOne)
   }
    catch (error) {
-    handleHttp(res, 'ERROR_DELETE_PUBLISH')    
+    handleHttp(res, 'ERROR_UPDATE_PUBLISH')    
   }
 }
 

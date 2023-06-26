@@ -17,11 +17,10 @@ const getAllArtists = async (req: Request, res: Response)=>{
 }
 
 const getOneArtist = async({params}:Request, res:Response)=>{
-    const id = params.id
-    const idParse = parseInt(id)
-    
-    try{
-    const getOne = await prisma.artist.findUnique({
+  try{
+      const id = params.id
+      const idParse = parseInt(id)
+      const getOne = await prisma.artist.findUnique({
       where:{
         id_artist:idParse
       }, 
@@ -34,9 +33,9 @@ const getOneArtist = async({params}:Request, res:Response)=>{
       },
     });
 
-    if(!getOne){
-      res.status(404).send({error:"Artist not found"})
-    }
+    // if(!getOne){
+    //   res.status(404).send({error:"Artist not found"})
+    // }
     res.send({artist:getOne})
   }
   catch(error){

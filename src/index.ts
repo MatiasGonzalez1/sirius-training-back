@@ -21,4 +21,8 @@ app.use("/api", artistRoutes );
 app.use("/api", themeRoutes);
 app.use("/api", publishRoutes);
 
+app.use((req, res, next)=>{
+  res.status(404).json({error:'Sorry! 404 not found', try:['/api/artists', '/api/publish', '/api/theme']})
+});
+
 app.listen(PORT, ()=> console.log(`Servidor listo en el puerto ${PORT}`));
