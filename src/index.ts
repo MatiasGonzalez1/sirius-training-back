@@ -15,7 +15,7 @@ app.use(cors());
 //recibe datos en formato json por body
 app.use(express.json())
 
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", artistRoutes );
 app.use("/api", themeRoutes);
