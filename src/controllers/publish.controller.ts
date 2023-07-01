@@ -9,9 +9,9 @@ const getAllPublish = async (req: Request, res: Response)=>{
     const response = await prisma.publish.findMany({
     });
     if(response.length === 0){
-      res.send({response:'There are no artists currently'})
+      return res.status(404).send({message:'There are no artists currently'})
     }else{
-    res.send({allPublish:response})
+    return res.send({status: 200, count: response.length, data:response})
     };
   } catch (error) {
     handleHttp(res, 'ERROR_GET_PUBLISH')    
@@ -44,14 +44,13 @@ const getOnePublish = async({params}:Request, res:Response)=>{
       
     });
     if(!getOne){
-      res.status(404).send({error:"Publish not found"})
+      return res.status(404).send({error:"Publish not found"})
     }
     // res.send({...getOne, totalDuration: parseInt(totalDuration[0].sum)})
-    res.send({getOne, totalDuration:(totalDuration._sum.duration)})
+    res.send({status: 200, data: getOne, totalDuration:(totalDuration._sum.duration)})
   }
    catch (error) {
-    console.log(error)   
-  }
+    handleHttp(res, 'ERROR_GET_ONE_PUBLISH')  }
 }
 
 const createPublish =async ({body}:Request, res:Response) => {
@@ -73,11 +72,13 @@ const createPublish =async ({body}:Request, res:Response) => {
       include:{
         theme:true,
       }
-      })
-    console.log(create)
-    res.send(create)
+      });
+      if(!artist_id || !name || !date){
+        return res.status(403).send({status:"FAILED", data: {error: "Some of the keys are missing from the request body, please check them: 'name', 'date', 'artist_id'"}})
+      }
+    res.send({status: 200, data:create})
   } catch(error){
-    console.log(error)
+    handleHttp(res, 'ERROR_CREATE_PUBLISH')
   }
 }
 
@@ -91,37 +92,45 @@ const updatePublish = async({params, body}:Request, res:Response)=>{
       },
       data:body
     });
-    res.send(getOne)
+
+    if(
+      !body.name 
+    ){
+      return res.status(403).send({status:403, data: {error: "The following key are required 'name' "}})
+    }else{
+    res.send({status:200, data:getOne})
+    }
   }
    catch (error) {
-    handleHttp(res, 'ERROR_DELETE_PUBLISH')    
+    handleHttp(res, 'ERROR_UPDATE_PUBLISH')   
   }
 }
 
 const deletePublish = async({params}:Request, res:Response)=>{
   try {
+    
     const id = params.id
     const idParse = parseInt(id)
+    
     const deleteOne = prisma.publish.delete({
       where:{
         id_publish:idParse
       }
     });
-    if(!deletePublish ){
-      res.status(404).send({error: "Publish not found"})
-    }
+    if(!deletePublish){
+      return res.status(404).send({error: "Publish not found"})
+    } 
     const deleteThemes = prisma.theme.deleteMany({
       where:{
         publish_id:idParse
       }
     });
-
     
     const transaction = await prisma.$transaction([deleteThemes, deleteOne])
-    res.send({dataDeleted:transaction})
+    res.send({status: 200, data:transaction})
   }
    catch (error) {
-    console.log(error)
+    handleHttp(res,'ERROR_DELETE_PUBLISH')
   }
 }
 

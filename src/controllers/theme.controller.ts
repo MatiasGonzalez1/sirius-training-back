@@ -7,7 +7,11 @@ const prisma = new PrismaClient()
 const getAllTheme = async (req: Request, res: Response)=>{
   try {
     const response = await prisma.theme.findMany({})
-    res.send(response);
+    if(response.length === 0){
+      return res.send({message:'There are no artists currently'})
+    }else{
+    return res.send({status:200, count: response.length, data:response})
+    };
   } catch (error) {
     handleHttp(res, 'ERROR_GET_THEME')    
   }
@@ -22,7 +26,10 @@ const getOneTheme= async({params}:Request, res:Response)=>{
        id:idParse
       },
     });
-    res.send(getOne)
+    if(!getOne){
+      return res.send({status: 404, message:"Theme not found"})
+     }
+    res.send({status:200, data:getOne})
   }
    catch (error) {
     handleHttp(res, 'ERROR_GET_THEME')    
@@ -40,7 +47,7 @@ const createTheme = async({body}:Request, res:Response) => {
     const create = await prisma.theme.create({
       data: body
     });
-    res.send(create)
+    res.send({status: 200, data:create})
   } catch(error){
     console.log(error)
   }
@@ -56,7 +63,7 @@ const updateTheme= async({params, body}:Request, res:Response)=>{
       },
       data:body
     });
-    res.send(getOne)
+    res.send({status:200, data:getOne})
   }
    catch (error) {
     handleHttp(res, 'ERROR_DELETE_THEME')    
@@ -72,7 +79,7 @@ const deleteTheme= async({params}:Request, res:Response)=>{
         id:idParse
       }
     });
-    res.send(deleteOne)
+    res.send({status:"success", artistDeleted:deleteOne})
   }
    catch (error) {
     handleHttp(res, 'ERROR_DELETE_THEME')    
