@@ -3,11 +3,11 @@ import {getAllPublish, createPublish, getOnePublish, deletePublish, updatePublis
 
 const router = Router();
 
-router.get("/publish", getAllPublish);
-router.get("/publish/:id", getOnePublish)
-router.post("/publish", createPublish);
-router.put("/publish/:id", updatePublish);
-router.delete("/publish/:id", deletePublish);
+router.get("/", getAllPublish);
+router.get("/:id", getOnePublish)
+router.post("/", createPublish);
+router.put("/:id", updatePublish);
+router.delete("/:id", deletePublish);
 
 export default router;
 

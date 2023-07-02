@@ -5,10 +5,10 @@ import { validateCreateArtist } from "../validators/artists";
 
 const router = Router();
 
-router.get("/artists", getAllArtists);
-router.get("/artists/:id", getOneArtist)
-router.post("/artists", validateCreateArtist, createArtist);
-router.put("/artists/:id", updateArtist);
-router.delete("/artists/:id", deleteArtist);
+router.get("/", getAllArtists);
+router.get("/:id", getOneArtist)
+router.post("/", validateCreateArtist, createArtist);
+router.put("/:id", updateArtist);
+router.delete("/:id", deleteArtist);
 
 export default router;

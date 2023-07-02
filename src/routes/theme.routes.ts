@@ -3,10 +3,10 @@ import {getAllTheme, createTheme, getOneTheme, deleteTheme, updateTheme} from ".
 
 const router = Router();
 
-router.get("/theme", getAllTheme);
-router.get("/theme/:id", getOneTheme)
-router.post("/theme", createTheme);
-router.put("/theme/:id", updateTheme);
-router.delete("/theme/:id", deleteTheme);
+router.get("/", getAllTheme);
+router.get("/:id", getOneTheme)
+router.post("/", createTheme);
+router.put("/:id", updateTheme);
+router.delete("/:id", deleteTheme);
 
 export default router;
